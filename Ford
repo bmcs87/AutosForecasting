@@ -1,0 +1,51 @@
+install.packages("data.table")
+library(data.table)
+
+setwd("C:/Users/resmi/Documents/Competitive File/ACF Data Files/ACF Lite Data")
+
+file_names = list.files(getwd())
+file_names = file_names[grepl(".TXT","DMA_Jan18", "DMA_Feb18", "DMA_Mar18", "DMA_Apr18", "DMA_May18_woCPO", "DMA_Jun18", "DMA_Jul18_woCPO", 
+  "DMA_Aug18_woCPO", "DMA_Sep18", "DMA_Oct18_woCPO", "DMA_Nov18", "DMA_Dec18", "DMA_Jan19", "DMA_Feb19", "DMA_Mar19", 
+  "DMA_Apr19")]
+
+ACFile <- fread("DMA_Jan18.txt", "DMA_Feb18.txt", "DMA_Mar18.txt", "DMA_Apr18.txt", "DMA_May18_woCPO.txt", "DMA_Jun18.txt", "DMA_Jul18_woCPO.txt", "DMA_Aug18_woCPO.txt", "DMA_Sep18.txt", "DMA_Oct18_woCPO.txt", "DMA_Nov18.txt", "DMA_Dec18.txt", "DMA_Jan19.txt", "DMA_Feb19.txt", "DMA_Mar19.txt", "DMA_Apr19.txt", "SOV_Jan18.txt", "SOV_Feb18.txt", "SOV_Mar18.txt", "SOV_Apr18.txt", "SOV_May18.txt", "SOV_Jun18.txt", "SOV_Jul18.txt", "SOV_Aug18.txt", "SOV_Sep18.txt", "SOV_Oct18.txt", "SOV_Nov18.txt", "SOV_Dec18.txt", "SOV_Jan19.txt", "SOV_Feb19.txt", "SOV_Mar19.txt", "SOV_Apr19.txt")
+
+
+
+
+data <- fread("Final_Collated_Aug169_CE_new.txt")
+colnames(data) <- c("Date", "StateName", "CityName", "Age", "Gender", "Device", "Marketplace", "L1", "L2", "Category1", "Category2", "Category3", "SRPV", "BSRPV", "Impressions", "Clicks", "Revenue")
+
+
+# Step 1: set the working directory (where files are saved)
+setwd("/Users/johnt/Google Drive/namesbystate/")
+ 
+# Step 2: get all the right file names
+file_names = list.files(getwd())
+file_names = file_names[grepl(".TXT",file_names)]
+ 
+# Step 3: get the read.csv function working
+files = read.csv("WY.TXT", header=F, stringsAsFactors = F)
+ 
+# Step 4: use lapply to apply the read.csv function to all values of file_names
+files = lapply(file_names, read.csv, header=F, stringsAsFactors = F)
+files = do.call(rbind,files)
+ 
+# Step 5: Set column names
+names(files) = c("state", "gender", "year", "name", "count")
+ 
+# check structure of new data set
+str(files)
+
+
+#######################################
+
+data.short <- data[data$Gender=="Female", c("Date","Clicks","Impressions", "Revenue")]
+
+acf(data.short, plot=FALSE)
+ar.data.short <- ar(data.short)
+ar.data.short
+
+predict(ar.data.short, n.ahead=365)
+
+ts.plot(data.short, predict(ar.data.short, n.ahead=365)$pred,lty=c(1:2))
