@@ -1,0 +1,7 @@
+install.packages("data.table", "lubridate")
+library(data.table, lubridate)
+
+setwd("C:/Users/resmi/Desktop")
+
+ACFile <- fread("ford.txt")
+
