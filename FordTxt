@@ -1,5 +1,7 @@
-install.packages("data.table", "lubridate")
-library(data.table, lubridate)
+install.packages("data.table")
+install.packages("lubridate")
+install.packages("tidyverse")
+library(data.table, lubridate, tidyverse)
 
 setwd("C:/Users/resmi/Desktop")
 
