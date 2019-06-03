@@ -1,0 +1,6 @@
+install.packages("data.table")
+install.packages("lattice")
+library(data.table, lattice)
+
+data <- fread("file.txt")
+
