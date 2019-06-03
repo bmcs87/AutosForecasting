@@ -1,0 +1,6 @@
+install.packages("data.table"
+install.packages("lattice")
+
+library(data.table, lattice)
+
+supply <- fread("SupplyData_Jan17-Feb19.csv")
