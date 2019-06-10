@@ -8,9 +8,3 @@ supply <- fread("SupplyData_Jan17-Feb19.csv")
 as.Date(unlist(strsplit(supply$Date," ")))
 
 
-
-#from maxi
-if(!is.na(df[which(df$`Order Of User Search In Path From End Point` == touchpoint),"Brand.Name"][1])){
-brand.search.date <- strptime(df[which(df$`Order Of User Search In Path From End Point` == touchpoint),"Query Search Date Time"][1],
-format= "%b %e %Y %I:%M %p",
-tz="CET")
