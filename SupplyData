@@ -1,10 +1,8 @@
 install.packages("data.table")
-install.packages("lattice")
+library(data.table)
 
-library(data.table, lattice)
+supply <- read.csv("SupplyData_Jan17-Feb19.csv")
 
-supply <- fread("SupplyData_Jan17-Feb19.csv")
+supply$Date2 <- as.Date(supply$ï..Date)
 
-as.Date(unlist(strsplit(supply$Date," ")))
-
-
+plot(supply$Clicks ~ supply$Date2)
