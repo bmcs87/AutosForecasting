@@ -7,3 +7,5 @@ supply$Date2 <- as.Date(supply$ï..Date)
 
 #plot(supply$Clicks ~ supply$Date2)
 summary(lm(supply$Clicks ~ supply$Date2))
+
+summary(lm(supply$SRPVs ~ supply$Country, data=supply))
