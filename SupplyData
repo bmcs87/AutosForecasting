@@ -1,13 +1,13 @@
 
 install.packages("data.table")
 install.packages("lattice")
+install.packages("dplyr")
 library(data.table, lattice)
+library(dplyr)
 
 supply <- read.csv("SupplyData_Jan17-Feb19.csv")
 
+supply2 <- supply %>% filter(grepl("2017", CPO.Flag) | grepl("2018", CPO.Flag))
 supply$Date2 <- as.Date(supply$ï..Date)
 
-#supply$CPO.Flag <- as.numeric(as.factor(supply$CPO.Flag))
-supply.new <- data[supply$CPO.Flag=="2017"]
-
-summary(lm(supply$SRPVs ~ supply$Country, data=supply))
+summary(lm(supply2$SRPVs ~ supply2$Country, data=supply2))
