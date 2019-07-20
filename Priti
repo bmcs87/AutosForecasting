@@ -1,0 +1,1 @@
+clicks <- read.csv("clicks.csv")
