@@ -6,6 +6,7 @@ library(tidyverse)
 library(caret)
 library(MASS)
 
+audi <- read.csv("audi.csv")
 
 ##Prepping the data
 # Load the data and remove NAs
@@ -14,7 +15,7 @@ audi2 <- na.omit(audi)
 sample_n(audi2, 3)
 # Split the data into training and test set
 set.seed(123)
-training.samples <- audi2$City %>% 
+training.samples <- audi2$SOV %>% 
   createDataPartition(p = 0.8, list = FALSE)
 train.data <- audi2[training.samples, ]
 test.data <- audi2[-training.samples, ]
@@ -22,19 +23,18 @@ test.data <- audi2[-training.samples, ]
 
 ##Quickstart R code
 # Fit the model
-model <- glm(diabetes ~., data = train.data, family = binomial) %>%
-  stepAIC(trace = FALSE)
+model <- glm(SOV ~., data = train.data, family=binomial) %>% stepAIC(trace = FALSE)
 # Summarize the final selected model
 summary(model)
 # Make predictions
 probabilities <- model %>% predict(test.data, type = "response")
 predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
 # Model accuracy
-mean(predicted.classes==test.data$diabetes)
+mean(predicted.classes==test.data$SOV)
 
 
 ##Full Logistic Regression Model
-full.model <- glm(diabetes ~., data = train.data, family = binomial)
+full.model <- glm(SOV ~., data = train.data, family = binomial)
 coef(full.model)
 
 
