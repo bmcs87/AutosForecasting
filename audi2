@@ -44,7 +44,7 @@ step.model <- full.model %>% stepAIC(trace = FALSE)
 coef(step.model)
 
 
-Compare the full and the stepwise models
+##Compare the full and the stepwise models
 # Make predictions
 probabilities <- full.model %>% predict(test.data, type = "response")
 predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
