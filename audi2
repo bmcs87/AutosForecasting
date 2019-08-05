@@ -1,0 +1,67 @@
+install.packages("tidyverse")
+install.packages("caret")
+install.packages("MASS")
+
+library(tidyverse)
+library(caret)
+library(MASS)
+
+audi <- read.csv("audi.3.csv")
+
+##Prepping the data
+# Load the data and remove NAs
+audi2 <- na.omit(audi)
+# Inspect the data
+sample_n(audi2, 3)
+# Split the data into training and test set
+set.seed(123)
+training.samples <- audi2$Clicks %>% 
+  createDataPartition(p = 0.8, list = FALSE)
+train.data <- audi2[training.samples, ]
+test.data <- audi2[-training.samples, ]
+
+
+##Quickstart R code
+# Fit the model
+model <- glm(Clicks ~., data = train.data) %>% stepAIC(trace = FALSE)
+# Summarize the final selected model
+summary(model)
+# Make predictions
+probabilities <- model %>% predict(test.data, type = "response")
+predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
+# Model accuracy
+mean(predicted.classes==test.data$Clicks)
+
+
+##Full Logistic Regression Model
+full.model <- glm(Clicks ~., data = train.data)
+coef(full.model)
+
+
+##Perform Stepwise Regression Model
+library(MASS)
+step.model <- full.model %>% stepAIC(trace = FALSE)
+coef(step.model)
+
+
+Compare the full and the stepwise models
+# Make predictions
+probabilities <- full.model %>% predict(test.data, type = "response")
+predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
+
+
+# Prediction accuracy of full logistic regression model
+observed.classes <- test.data$Clicks
+mean(predicted.classes == observed.classes)
+
+
+##Prediction accuracy of the stepwise logistic regression model:
+# Make predictions
+probabilities <- predict(step.model, test.data, type = "response")
+predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
+# Prediction accuracy
+observed.classes <- test.data$Clicks
+mean(predicted.classes == observed.classes)
+
+
+## http://www.sthda.com/english/articles/36-classification-methods-essentials/150-stepwise-logistic-regression-essentials-in-r/
